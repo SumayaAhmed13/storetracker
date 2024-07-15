@@ -5,7 +5,7 @@ export const StoreContext = createContext();
 export const StoreProvider = ({ children }) => {
   const [basket, setbasket] = useState(null);
 
-  function removeItem(productId, quantity) {
+  function removeItem(productId, quantity=1) {
     if (!basket) return;
 
     const items = [...basket.items];

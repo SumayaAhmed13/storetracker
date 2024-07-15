@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Card,
   CardActions,
@@ -12,12 +12,16 @@ import {
 import { Link } from "react-router-dom";
 import agent from "../../header/api/agent";
 import { LoadingButton } from "@mui/lab";
+import { StoreContext } from "../../header/context/StoreContext";
+import { currencyFormat } from "../../header/utility/utils";
 const ProductCard = ({ product }) => {
-  const [loading, setLoading] = useState(false);
+const [loading, setLoading] = useState(false);
+const{setbasket}=useContext(StoreContext)
 
   const handleAddItem = (productId) => {
     setLoading(true);
     agent.Basket.addItem(productId)
+      .then((basket)=>setbasket(basket))
       .catch((error) => console.log(error))
       .finally(() => setLoading(false));
   };
@@ -47,7 +51,7 @@ const ProductCard = ({ product }) => {
       />
       <CardContent>
         <Typography gutterBottom variant="h5" color="secondary">
-          ${(product.price / 100).toFixed(2)}
+          {currencyFormat(product.price)}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {product.brand}/{product.type}

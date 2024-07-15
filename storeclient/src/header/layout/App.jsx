@@ -25,6 +25,9 @@ function App() {
         .catch((error) => console.log(error))
         .finally(() => setLoading(false));
     }
+    else{
+      setLoading(false);
+    }
   },[setbasket]);
   const [darkMode, setDarkMode] = useState(false);
   const paletteType = darkMode ? "dark" : "light";
@@ -39,7 +42,7 @@ function App() {
   const handleThemeChange = () => {
     setDarkMode(!darkMode);
   };
-   //if(loading)return<Loading message='Initializing App'/>
+  if(loading)return<Loading message='Initializing App'/>
   return (
     <ThemeProvider theme={theme}>
       <ToastContainer position="bottom-right" hideProgressBar theme="colored" />

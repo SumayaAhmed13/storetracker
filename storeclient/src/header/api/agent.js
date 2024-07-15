@@ -2,8 +2,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { router } from "../router/Routes";
 
-const sleep = () => new Promise((resolve) => setTimeout(resolve, 500));
-axios.defaults.baseURL = "https://localhost:44339/api/";
+const sleep = () => new Promise((resolve) => setTimeout(resolve, 1000));
+axios.defaults.baseURL = "http://localhost:59346/api/";
 
 axios.defaults.withCredentials = true;
 const responseBody = (response) => response.data;
@@ -50,7 +50,7 @@ const Catalog = {
 const Basket = {
   get: () => requests.get("basket"),
   addItem: (productId, quantity = 1) => requests.post(`basket?productId=${productId}&quantity=${quantity}`, {}),
-  removeItem: (productId, quantity = 1) => requests.del(`basket?productId=${productId}&quantity=${quantity}`)
+  removeItem: (productId, quantity) => requests.delete(`basket?productId=${productId}&quantity=${quantity}`)
 }
 
 const TestErrors = {

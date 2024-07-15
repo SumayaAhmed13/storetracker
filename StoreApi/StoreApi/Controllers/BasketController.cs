@@ -74,14 +74,14 @@ namespace StoreApi.Controllers
      
 
         [HttpDelete]
-        public async Task<ActionResult> DeleteItemToBasket(int product, int quantity)
+        public async Task<ActionResult> DeleteItemToBasket(int productId, int quantity)
         {
             //get basket
             var basket= await RetrieveBasket();
             if (basket == null) return NotFound();
 
             //remove or reduce item from basket
-            basket.RemoveItem(product,quantity);
+            basket.RemoveItem(productId, quantity);
             //save changes
             var result = await _context.SaveChangesAsync() > 0;
             if(result)return Ok();
@@ -100,7 +100,7 @@ namespace StoreApi.Controllers
         private Basket CreateBasket()
         {
            var buyerId= Guid.NewGuid().ToString();
-           var cookiesOptions=new CookieOptions { IsEssential=true,Expires=DateTime.Now.AddDays(30)};
+           var cookiesOptions=new CookieOptions { IsEssential=true,Expires=DateTime.Now.AddDays(30),Secure=true,HttpOnly=true};
             Response.Cookies.Append("buyerId", buyerId,cookiesOptions);
             var basket = new Basket { BuyerId = buyerId };
             _context.Baskets.Add(basket);

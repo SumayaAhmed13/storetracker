@@ -17,6 +17,7 @@ builder.Services.AddDbContext<StoreContext>(opt =>
     opt.UseMySql(connectionString,ServerVersion.AutoDetect(connectionString));
 });
 
+
 builder.Services.AddCors();
 var app = builder.Build();
 
