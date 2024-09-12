@@ -1,10 +1,11 @@
 import { TableContainer, Paper, Table, TableBody, TableRow, TableCell, Typography } from "@mui/material";
-import { useContext } from "react";
-import { StoreContext } from './../../header/context/StoreContext';
+
 import { currencyFormat } from "../../header/utility/utils";
 
+import { useSelector } from "react-redux";
+
 export default function BasketSummary() {
-    const {basket}=useContext(StoreContext)
+    const {basket}=useSelector(state=>state.basket);
     const subtotal = basket?.items.reduce((sum ,item)=>sum +(item.price *item.quantity),0)??0
     const deliveryFee = subtotal>10000?0:500
 

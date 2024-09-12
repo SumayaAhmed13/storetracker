@@ -21,21 +21,21 @@ namespace StoreApi.Data
                 },
                 new Product
                 {
-                    Name = "Green Angular Board 3000",
+                    Name = "Hat with Feather",
                     Description = "Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.",
                     Price = 15000,
-                    ImageUrl = "/images/products/sb-ang2.png",
+                    ImageUrl = "/images/products/hat-with-feather.png",
                     Brand = "Angular",
                     Type = "Boards",
                     StockInQuantity = 100
                 },
                 new Product
                 {
-                    Name = "Core Board Speed Rush 3",
+                    Name = "Handmade Weari",
                     Description =
                         "Suspendisse dui purus, scelerisque at, vulputate vitae, pretium mattis, nunc. Mauris eget neque at sem venenatis eleifend. Ut nonummy.",
                     Price = 18000,
-                    ImageUrl = "/images/products/sb-core1.png",
+                    ImageUrl = "/images/products/handmadeweari.png",
                     Brand = "NetCore",
                     Type = "Boards",
                     StockInQuantity = 100

@@ -14,14 +14,17 @@ import agent from "../../header/api/agent";
 import { LoadingButton } from "@mui/lab";
 import { StoreContext } from "../../header/context/StoreContext";
 import { currencyFormat } from "../../header/utility/utils";
+import { useDispatch } from "react-redux";
+import { setBasket } from "../basket/basketSlice";
 const ProductCard = ({ product }) => {
 const [loading, setLoading] = useState(false);
-const{setbasket}=useContext(StoreContext)
+const dispatch=useDispatch();
 
   const handleAddItem = (productId) => {
+ 
     setLoading(true);
     agent.Basket.addItem(productId)
-      .then((basket)=>setbasket(basket))
+      .then((basket)=>dispatch(setBasket(basket)))
       .catch((error) => console.log(error))
       .finally(() => setLoading(false));
   };

@@ -10,16 +10,20 @@ import {
   Typography,
 } from "@mui/material";
 import agent from "../../header/api/agent";
-import React, { useContext, useEffect, useState } from "react";
+import React, {useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import NotFound from "../../header/errors/NotFound";
 import Loading from "../../header/layout/Loading";
 import { currencyFormat } from "../../header/utility/utils";
-import { StoreContext } from "../../header/context/StoreContext";
+
 import { LoadingButton } from "@mui/lab";
+import { useDispatch, useSelector } from "react-redux";
+import { setBasket,removeItem } from "../basket/basketSlice";
 
 const ProductDetails = () => {
-  const { basket, setbasket,removeItem } = useContext(StoreContext);
+ 
+  const dispatch=useDispatch();
+  const {basket}=useSelector(state=>state.basket);
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -39,7 +43,7 @@ const ProductDetails = () => {
     if(!item || quantity>item?.quantity){
         const updateQty=item?quantity-item.quantity:quantity
           agent.Basket.addItem(product?.id, updateQty)
-          .then((basket)=>setbasket(basket))
+          .then((basket)=>dispatch(setBasket(basket)))
           .catch(error=>console.log(error))
           .finally(()=>setSubmitting(false))
     }
@@ -48,7 +52,7 @@ const ProductDetails = () => {
 
       console.log(updateQuantity);
       agent.Basket.removeItem(product?.id,updateQuantity)
-      .then(()=>removeItem(product?.id,updateQuantity))
+      .then(()=>dispatch(removeItem({productId: product?.id, quantity:updateQuantity})))
       .catch(error=>console.log(error))
       .finally(()=>setSubmitting(false))
     }

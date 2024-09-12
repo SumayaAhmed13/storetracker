@@ -13,6 +13,7 @@ import {
 import React, { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { StoreContext } from "../context/StoreContext";
+import { useSelector } from "react-redux";
 
 const midLinks = [
   { title: "catalog", path: "/catalog" },
@@ -32,7 +33,7 @@ const navStyles = {
 };
 
 const Navbar = ({ darkMode, themeChange }) => {
-  const {basket}=useContext(StoreContext);
+  const {basket}=useSelector(state=>state.basket)
   const itemCount=basket?.items.reduce((sum,item)=>sum + item.quantity,0)
   return (
     <AppBar position="static" sx={{ mb: 4 }}>

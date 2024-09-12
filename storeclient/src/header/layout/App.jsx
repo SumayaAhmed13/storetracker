@@ -6,29 +6,32 @@ import {
   createTheme,
   ThemeProvider,
 } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import {useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/ReactToastify.css";
-import { StoreContext } from "../context/StoreContext";
 import { getCookie } from "../utility/utils";
 import agent from "../api/agent";
 import Loading from "./Loading";
+import { useDispatch } from "react-redux";
+import { setBasket } from "../../features/basket/basketSlice";
+
 function App() {
   const [loading, setLoading] = useState(true);
-  const { setbasket } = useContext(StoreContext);
+  //const { setbasket } = useContext(StoreContext);
+  const dispatch=useDispatch();
   useEffect(() => {
     const buyerId = getCookie("buyerId");
     console.log(buyerId);
     if (buyerId) {
       agent.Basket.get()
-        .then((basket) => setbasket(basket))
+        .then((basket) =>dispatch(setBasket(basket))) 
         .catch((error) => console.log(error))
         .finally(() => setLoading(false));
     }
     else{
       setLoading(false);
     }
-  },[setbasket]);
+  },[dispatch]);
   const [darkMode, setDarkMode] = useState(false);
   const paletteType = darkMode ? "dark" : "light";
   const theme = createTheme({

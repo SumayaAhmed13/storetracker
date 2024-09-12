@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import {
-  IconButton,
+
   Table,
   TableCell,
   TableContainer,
@@ -14,15 +14,18 @@ import {
   Button,
 } from "@mui/material";
 import { Add, Delete, Remove } from "@mui/icons-material";
-import { StoreContext } from "../../header/context/StoreContext";
+
 import agent from "../../header/api/agent";
 import { LoadingButton } from "@mui/lab";
 import BasketSummary from "./BasketSummary";
 import { currencyFormat } from "../../header/utility/utils";
 import { Link } from "react-router-dom";
-
+import { useDispatch, useSelector } from "react-redux";
+import { setBasket,removeItem } from "./basketSlice";
 const BasketPage = () => {
-  const { basket, setbasket, removeItem } = useContext(StoreContext);
+
+  const dispatch=useDispatch();
+  const {basket}=useSelector(state=>state.basket)
   const [status, setStatus] = useState({
     loading: false,
     name: "",
@@ -30,14 +33,14 @@ const BasketPage = () => {
   const handleAddItem = (productId, name) => {
     setStatus({ loading: true, name });
     agent.Basket.addItem(productId)
-      .then((basket) => setbasket(basket))
+      .then((basket) =>dispatch(setBasket(basket))) 
       .catch((error) => console.log(error))
       .finally(() => setStatus({ loading: false, name: "" }));
   };
-  const handleRemoveItem = (productId, quantity, name) => {
+  const handleRemoveItem = (productId, quantity=1, name) => {
     setStatus({ loading: true, name });
     agent.Basket.removeItem(productId, quantity)
-      .then(() => removeItem(productId))
+      .then(() =>dispatch(removeItem({productId,quantity}))) 
       .finally(() => setStatus({ loading: false, name: "" }));
   };
   if (!basket)
