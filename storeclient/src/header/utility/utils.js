@@ -6,3 +6,9 @@ export function currencyFormat(amount)
 {
   return '$'+(amount/100).toFixed(2);
 }
+const StatusCode = {
+  LOADING: "loading",
+  ERROR: "error",
+  IDLE: "idle",
+};
+export default StatusCode;

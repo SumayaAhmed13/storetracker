@@ -1,27 +1,20 @@
-import agent from "../../header/api/agent";
+import { useDispatch, useSelector } from "react-redux";
+
 import Loading from "../../header/layout/Loading";
 import ProductList from "./ProductList";
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
+import { fetchProductsAsync, productSelectors } from './catalogSlice';
+import StatusCode from "../../header/utility/utils";
 const Catalog = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const products=useSelector(productSelectors.selectAll)
+  const dispatch=useDispatch();
+  const {productLoaded,status}=useSelector((state)=>state.catelog)
+ 
   useEffect(() => {
-    agent.Catalog.list()
-    .then((products) => setProducts(products))
-    .catch(error=>console.log(error))
-    .finally(()=>setLoading(false));
-  }, []);
-  if (loading) return <Loading message="Loading..." />;
-  const addProduct = () => {
-    setProducts((prevState) => [
-      ...prevState,
-      {
-        id: prevState.length + 1,
-        name: "product" + (prevState.length + 1),
-        price: prevState.length * 100 + 100,
-      },
-    ]);
-  };
+    if(!productLoaded)dispatch(fetchProductsAsync())
+  }, [dispatch,productLoaded]);
+  if (status===StatusCode.LOADING) return <Loading message="Loading..." />;
+  
   return (
     <>
       <ProductList products={products} />

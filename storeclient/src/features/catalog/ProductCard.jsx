@@ -1,4 +1,3 @@
-import React, { useContext, useState } from "react";
 import {
   Card,
   CardActions,
@@ -10,24 +9,16 @@ import {
   Avatar,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import agent from "../../header/api/agent";
 import { LoadingButton } from "@mui/lab";
-import { StoreContext } from "../../header/context/StoreContext";
 import { currencyFormat } from "../../header/utility/utils";
-import { useDispatch } from "react-redux";
-import { setBasket } from "../basket/basketSlice";
-const ProductCard = ({ product }) => {
-const [loading, setLoading] = useState(false);
-const dispatch=useDispatch();
+import { useDispatch, useSelector } from "react-redux";
+import { addBasketItemAsync } from "../basket/basketSlice";
+import StatusCode from "../../header/utility/utils";
 
-  const handleAddItem = (productId) => {
- 
-    setLoading(true);
-    agent.Basket.addItem(productId)
-      .then((basket)=>dispatch(setBasket(basket)))
-      .catch((error) => console.log(error))
-      .finally(() => setLoading(false));
-  };
+const ProductCard = ({ product }) => {
+
+const dispatch=useDispatch();
+const {status}=useSelector(state=>state.basket);
 
   return (
     <Card>
@@ -63,8 +54,8 @@ const dispatch=useDispatch();
       <CardActions>
         <LoadingButton
           size="small"
-          loading={loading}
-          onClick={() => handleAddItem(product.id)}>
+          loading={status===(StatusCode.LOADING + product.id)}
+          onClick={()=>dispatch(addBasketItemAsync({productId:product.id}))}>
           Add to cart
         </LoadingButton>
 
