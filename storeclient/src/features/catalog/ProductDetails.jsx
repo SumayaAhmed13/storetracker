@@ -116,7 +116,7 @@ const ProductDetails = () => {
               xs={{height: "95px" }}
               size="large"
               fullWidth
-              loading={status===(StatusCode.LOADING +product.productId)}
+              loading={status===StatusCode.LOADING}
               onClick={handleUpdateCart}
               >
               {item ? "Update Quantity" : "Add Quantity"}

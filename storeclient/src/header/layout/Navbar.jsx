@@ -10,9 +10,8 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import React, { useContext } from "react";
+
 import { Link, NavLink } from "react-router-dom";
-import { StoreContext } from "../context/StoreContext";
 import { useSelector } from "react-redux";
 
 const midLinks = [

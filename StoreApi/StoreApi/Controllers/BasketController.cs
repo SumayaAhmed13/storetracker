@@ -25,8 +25,6 @@ namespace StoreApi.Controllers
             if (basket == null) return NotFound();
             return MapBasketToDto(basket);
         }
-       
-
         private BasketDto MapBasketToDto(Basket basket)
         {
             return new BasketDto
@@ -47,8 +45,6 @@ namespace StoreApi.Controllers
                 }).ToList(),
             };
         }
-
-      
         //api/basket?productId=3&quantity=2
         [HttpPost]
         
@@ -60,7 +56,7 @@ namespace StoreApi.Controllers
 
             //get product
             var product = await _context.Products.FindAsync(productId);
-            if (product == null) return NotFound();
+            if (product == null) return BadRequest(new ProblemDetails {Title="Product not found" });
             //add item
             basket.AddItem(product,quantity);
             //save changes
@@ -70,9 +66,6 @@ namespace StoreApi.Controllers
       
             return BadRequest(new ProblemDetails { Title = "Problem saving item to basket" });
         }
-
-     
-
         [HttpDelete]
         public async Task<ActionResult> DeleteItemToBasket(int productId, int quantity)
         {

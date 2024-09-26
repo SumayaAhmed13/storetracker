@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import StatusCode from "../../header/utility/utils";
-import agent from "./../../header/api/agent";
+import agent from "../../header/api/agent";
 
 const initialState = {
   basket: null,
@@ -14,17 +14,7 @@ export const basketSlice = createSlice({
     setBasket: (state, action) => {
       state.basket = action.payload;
     },
-    removeItem: (state, action) => {
-      const { productId, quantity } = action.payload;
-      const itemIndex = state.basket?.items.findIndex(
-        (i) => i.productId === productId
-      );
-      if (itemIndex === -1 || itemIndex === undefined) return;
-      state.basket.items[itemIndex].quantity -= quantity;
-      if (state.basket.items[itemIndex].quantity === 0)
-        state.basket.items.splice(itemIndex, 1);
-    },
-
+  
   },
   extraReducers:(builder)=>{
    //add item
@@ -37,6 +27,7 @@ export const basketSlice = createSlice({
     });
     builder.addCase(addBasketItemAsync.rejected, (state, action) => {
       state.status = StatusCode.ERROR;
+      console.log(action.payload);
     });
     ///remove item
     builder.addCase(removeBasketItemAsync.pending, (state, action) => {
@@ -56,28 +47,30 @@ export const basketSlice = createSlice({
     });
     builder.addCase(removeBasketItemAsync.rejected, (state, action) => {
       state.status = StatusCode.ERROR;
+      console.log(action.payload);
     });
   }
 });
 export const { setBasket, removeItem } = basketSlice.actions;
+export default basketSlice.reducer;
 
 export const addBasketItemAsync = createAsyncThunk(
   "basket/addBasketItemAsync",
-  async ({productId, quantity}) => {
+  async ({productId, quantity},thunkAPI) => {
     try {
       return await agent.Basket.addItem(productId, quantity);
     } catch (error) {
-      console.log(error);
+      return thunkAPI.rejectWithValue({error:error.data});
     }
   }
 );
 export const removeBasketItemAsync = createAsyncThunk(
   "basket/removeBasketItemAsync",
-  async ({productId, quantity=1}) => {
+  async ({productId, quantity=1},thunkAPI) => {
     try {
       return await agent.Basket.removeItem(productId, quantity);
     } catch (error) {
-      console.log(error);
+      return thunkAPI.rejectWithValue({error:error.data});
     }
   }
 );
