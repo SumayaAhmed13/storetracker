@@ -1,11 +1,25 @@
-﻿using StoreApi.Entities;
+﻿using Microsoft.AspNetCore.Identity;
+using StoreApi.Entities;
 
 namespace StoreApi.Data
 {
     public class DbInitializer
     {
-        public static void Initializ(StoreContext context) {
+        public static async Task Initializ(StoreContext context,UserManager<User> userManager) {
             if(context.Products.Any()) return;
+            if (!userManager.Users.Any())
+            {
+                var user = new User { UserName="Sumaya",Email="sumaya@test.com"};
+
+                await userManager.CreateAsync(user, "Pa$$w0rd");
+                await userManager.AddToRoleAsync(user, "Member");
+
+                var admin = new User { UserName = "Admin", Email = "admin@test.com" };
+
+                await userManager.CreateAsync(user, "Pa$$w0rd");
+                await userManager.AddToRoleAsync(user, "Member");
+            };
+          
 
             var products = new List<Product> {
             new Product
