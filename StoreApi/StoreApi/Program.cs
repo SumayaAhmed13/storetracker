@@ -5,6 +5,7 @@ using StoreApi.Data;
 using StoreApi.Entities;
 using StoreApi.Middleware;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -21,9 +22,12 @@ builder.Services.AddDbContext<StoreContext>(opt =>
 
 
 builder.Services.AddCors();
-builder.Services.AddIdentityCore<User>()
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<StoreContext>();
+builder.Services.AddIdentityCore<User>(opts =>
+{
+    opts.User.RequireUniqueEmail = true;
+})
+  .AddRoles<IdentityRole>()
+  .AddEntityFrameworkStores<StoreContext>();
 
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();

@@ -12,8 +12,8 @@ using StoreApi.Data;
 namespace StoreApi.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20240927102539_Added Identity")]
-    partial class AddedIdentity
+    [Migration("20240929161135_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,13 +53,13 @@ namespace StoreApi.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "94504f4a-5861-4177-998e-acc335d60e1f",
+                            Id = "7f10d544-a089-4ec5-8150-0b6713e55b51",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = "e863c18b-e04b-40e6-9df8-12adc5921bf2",
+                            Id = "84a8a4cd-939f-4171-b472-fe538111d389",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
