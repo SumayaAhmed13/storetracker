@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../header/layout/Loading";
 import ProductList from "./ProductList";
 import { useEffect } from "react";
-import {fetchProductsAsync,productSelectors,fetchFiltersAsync,setProductParams} from "./catalogSlice";
+import {fetchProductsAsync,productSelectors,fetchFiltersAsync,setProductParams,setPageNumber} from "./catalogSlice";
 import {Grid,Paper} from "@mui/material";
 import ProductSearch from "./ProductSearch";
 import RadioButtonGroup from "../../components/RadioButtonGroup";
@@ -17,7 +17,7 @@ const sortOptions = [
 const Catalog = () => {
   const products = useSelector(productSelectors.selectAll);
   const dispatch = useDispatch();
-  const { productLoaded, filtersLoaded, brands, types, productParams,metaData,setPageNumber } =
+  const { productLoaded, filtersLoaded, brands, types, productParams,metaData } =
     useSelector((state) => state.catelog);
 
   useEffect(() => {
@@ -67,7 +67,8 @@ const Catalog = () => {
       <Grid item xs={3} />
       <Grid item xs={9} sx={{mb:2}}>
         {metaData &&
-        <CatelogPagination metaData={metaData} onPageChange={(page)=> dispatch(setPageNumber({pageNumber:page}))}  />
+        <CatelogPagination metaData={metaData} 
+         onPageChange={(page) => dispatch(setPageNumber({pageNumber: page}))}  />
         }
          
       </Grid>

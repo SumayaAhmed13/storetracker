@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StoreApi.Data;
 
@@ -11,9 +12,11 @@ using StoreApi.Data;
 namespace StoreApi.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20241003134740_SeedDataUpdated")]
+    partial class SeedDataUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,13 +53,13 @@ namespace StoreApi.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3077dd51-743c-48e6-86e2-f0e79a31c97b",
+                            Id = "65ac5e9e-78a9-4509-8de3-4fa8f3259c66",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = "df6a372b-59e4-458e-9594-eb7c4af3ef77",
+                            Id = "07198345-fddb-46e9-9a24-04fd2456d3cf",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });

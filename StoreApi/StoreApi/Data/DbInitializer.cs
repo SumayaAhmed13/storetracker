@@ -16,8 +16,8 @@ namespace StoreApi.Data
 
                 var admin = new User { UserName = "Admin", Email = "admin@test.com" };
 
-                await userManager.CreateAsync(user, "Pa$$w0rd");
-                await userManager.AddToRoleAsync(user, "Member");
+                await userManager.CreateAsync(admin, "Pa$$w0rd");
+                await userManager.AddToRolesAsync(admin, new[] { "Admin", "Member" });
             };
           
 
