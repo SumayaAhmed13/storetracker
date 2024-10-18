@@ -62,7 +62,7 @@ const BasketPage = () => {
                 <TableCell align="center">
                   <LoadingButton
                     loading={status===StatusCode.LOADING + item.productId + 'rem'}
-                    onClick={() =>dispatch(removeBasketItemAsync({productId:item.productId,quantity:item.quantity,name:'rem'}))}
+                    onClick={() =>dispatch(removeBasketItemAsync({productId:item.productId,quantity:1,name:'rem'}))}
                     color="error">
                     <Remove />
                   </LoadingButton>

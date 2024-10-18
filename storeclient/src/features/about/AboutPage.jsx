@@ -1,10 +1,27 @@
-import { Button, ButtonGroup, Container, Typography } from "@mui/material";
+import {
+  Alert,
+  AlertTitle,
+  Button,
+  ButtonGroup,
+  Container,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+} from "@mui/material";
 import agent from "../../header/api/agent";
 const AboutPage = () => {
+  const [validationErrors, setValidationErrors] = useState([]);
+
+  function getValidationError() {
+    agent.TestErrors.getValidationError()
+      .then(() => console.log("should not see this!"))
+      .catch((error) => setValidationErrors(error));
+  }
   return (
     <Container>
-      <Typography gutterBottom variant="h2">
-        Error For Testing Purpose
+      <Typography gutterBottom variant={"h2"}>
+        Errors for testing purposes
       </Typography>
       <ButtonGroup fullWidth>
         <Button
@@ -43,6 +60,18 @@ const AboutPage = () => {
           Error 500(Server Error)
         </Button>
       </ButtonGroup>
+      {validationErrors.length > 0 && (
+        <Alert severity="error">
+          <AlertTitle>Validation Errors</AlertTitle>
+          <List>
+            {validationErrors.map((error) => (
+              <ListItem key={error}>
+                <ListItemText>{error}</ListItemText>
+              </ListItem>
+            ))}
+          </List>
+        </Alert>
+      )}
     </Container>
   );
 };

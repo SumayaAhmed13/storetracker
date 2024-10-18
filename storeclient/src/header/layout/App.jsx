@@ -6,32 +6,32 @@ import {
   createTheme,
   ThemeProvider,
 } from "@mui/material";
-import {useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/ReactToastify.css";
-import { getCookie } from "../utility/utils";
-import agent from "../api/agent";
+
 import Loading from "./Loading";
 import { useDispatch } from "react-redux";
-import { setBasket } from "../../features/basket/basketSlice";
+import { fetchBasketAsync} from "../../features/basket/basketSlice";
+import { fetchCurrentUser } from "../../features/account/accountSlice";
 
 function App() {
   const [loading, setLoading] = useState(true);
-  //const { setbasket } = useContext(StoreContext);
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
+  const initApp =useCallback(
+    async () => {
+      try {
+        await dispatch(fetchCurrentUser());
+        await dispatch(fetchBasketAsync());
+      } catch (error) {
+        console.log(error);
+      }
+    },[dispatch])
   useEffect(() => {
-    const buyerId = getCookie("buyerId");
-    //console.log(buyerId);
-    if (buyerId) {
-      agent.Basket.get()
-        .then((basket) =>dispatch(setBasket(basket))) 
-        .catch((error) => console.log(error))
-        .finally(() => setLoading(false));
-    }
-    else{
+    initApp().then(() => {
       setLoading(false);
-    }
-  },[dispatch]);
+    });
+  }, [initApp]);
   const [darkMode, setDarkMode] = useState(false);
   const paletteType = darkMode ? "dark" : "light";
   const theme = createTheme({
@@ -45,7 +45,7 @@ function App() {
   const handleThemeChange = () => {
     setDarkMode(!darkMode);
   };
-  if(loading)return<Loading message='Initializing App'/>
+  if (loading) return <Loading message="Initializing App" />;
   return (
     <ThemeProvider theme={theme}>
       <ToastContainer position="bottom-right" hideProgressBar theme="colored" />

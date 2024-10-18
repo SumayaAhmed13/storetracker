@@ -1,17 +1,19 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Divider from "@mui/material/Divider";
 import FormLabel from "@mui/material/FormLabel";
 import FormControl from "@mui/material/FormControl";
-import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { LoadingButton } from "@mui/lab";
+import { useDispatch } from "react-redux";
+import { signInUser } from "./accountSlice";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -55,62 +57,37 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function Login() {
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
-  const [passwordError, setPasswordError] = React.useState(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
-  const handleSubmit = (event) => {
-    if (emailError || passwordError) {
-      event.preventDefault();
-      return;
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const location=useLocation();
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting, errors, isValid },
+  } = useForm({
+    mode: "onTouched",
+  });
+
+  const formSubmit = async (data) => {
+    try {
+      await dispatch(signInUser(data));
+      navigate(location.state?.from||"/catalog");
+    } catch (error) {
+      console.log(error);
     }
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
   };
-
-  const validateInputs = () => {
-    const email = document.getElementById("email");
-    const password = document.getElementById("password");
-
-    let isValid = true;
-
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-      setEmailError(true);
-      setEmailErrorMessage("Please enter a valid email address.");
-      isValid = false;
-    } else {
-      setEmailError(false);
-      setEmailErrorMessage("");
-    }
-
-    if (!password.value || password.value.length < 6) {
-      setPasswordError(true);
-      setPasswordErrorMessage("Password must be at least 6 characters long.");
-      isValid = false;
-    } else {
-      setPasswordError(false);
-      setPasswordErrorMessage("");
-    }
-
-    return isValid;
-  };
-
   return (
     <SignInContainer direction="column" justifyContent="space-between">
-      {/* <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} /> */}
       <Card variant="outlined">
         <Typography
           component="h1"
           variant="h4"
-          sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}>
+          sx={{ width: "100%", fontSize: "bold", textAlign: "center" }}>
           Sign in
         </Typography>
         <Box
           component="form"
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(formSubmit)}
           noValidate
           sx={{
             display: "flex",
@@ -119,47 +96,30 @@ export default function Login() {
             gap: 2,
           }}>
           <FormControl>
-            <FormLabel htmlFor="email">Email</FormLabel>
+            <FormLabel htmlFor="username">User Name</FormLabel>
             <TextField
-              error={emailError}
-              helperText={emailErrorMessage}
-              id="email"
-              type="email"
-              name="email"
-              placeholder="your@email.com"
-              autoComplete="email"
+              type="username"
+              placeholder="User Name"
               autoFocus
               required
               fullWidth
               variant="outlined"
-              color={emailError ? "error" : "primary"}
-              sx={{ ariaLabel: "email" }}
+              sx={{ ariaLabel: "username" }}
+              {...register("username", { required: "User Name is Required" })}
+              error={!!errors.username}
+              helperText={errors?.username?.message}
             />
           </FormControl>
           <FormControl>
-            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <FormLabel htmlFor="password">Password</FormLabel>
-              <Link
-                component="button"
-                type="button"
-                variant="body2"
-                sx={{ alignSelf: "baseline" }}>
-                Forgot your password?
-              </Link>
-            </Box>
+            <FormLabel htmlFor="password">Password</FormLabel>
             <TextField
-              error={passwordError}
-              helperText={passwordErrorMessage}
-              name="password"
               placeholder="••••••"
               type="password"
-              id="password"
-              autoComplete="current-password"
-              autoFocus
-              required
               fullWidth
               variant="outlined"
-              color={passwordError ? "error" : "primary"}
+              {...register("password", { required: "Password is Required" })}
+              error={!!errors.password}
+              helperText={errors?.password?.message}
             />
           </FormControl>
           <FormControlLabel
@@ -167,20 +127,18 @@ export default function Login() {
             label="Remember me"
           />
 
-          <Button
+          <LoadingButton
             type="submit"
             fullWidth
             variant="contained"
-            onClick={validateInputs}>
+            loading={isSubmitting}
+            disabled={!isValid}>
             Sign in
-          </Button>
+          </LoadingButton>
           <Typography sx={{ textAlign: "center" }}>
             Don&apos;t have an account?{" "}
             <span>
-              <Link
-                href="/material-ui/getting-started/templates/sign-in/"
-                variant="body2"
-                sx={{ alignSelf: "center" }}>
+              <Link to="/register" variant="body2" sx={{ alignSelf: "center" }}>
                 Sign up
               </Link>
             </span>
