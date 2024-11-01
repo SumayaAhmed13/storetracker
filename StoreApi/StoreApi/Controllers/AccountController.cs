@@ -85,6 +85,14 @@ namespace StoreApi.Controllers
             };
         }
 
+        [Authorize]
+        [HttpGet("savedAddress")]
+        public async Task<ActionResult<UserAddress>> GetSaveAddress()
+        {
+            return await _userManager.Users
+                .Where(x => x.UserName == User.Identity.Name)
+                .Select(c => c.Address).FirstOrDefaultAsync();
+        }
 
         private async Task<Basket> RetrieveBasket(string buyerId)
         {

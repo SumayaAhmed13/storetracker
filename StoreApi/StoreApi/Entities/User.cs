@@ -2,7 +2,8 @@
 
 namespace StoreApi.Entities
 {
-    public class User:IdentityUser
+    public class User:IdentityUser<int>
     {
+        public UserAddress Address  { get; set; }
     }
 }

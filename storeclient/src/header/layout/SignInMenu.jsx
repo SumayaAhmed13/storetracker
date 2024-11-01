@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "../../features/account/accountSlice";
 import { clearBasket } from "../../features/basket/basketSlice";
+import { Link } from "react-router-dom";
+
 
 const SignInMenu = () => {
   const dispatch = useDispatch();
@@ -28,7 +30,7 @@ const SignInMenu = () => {
         onClose={handleClose}
         TransitionComponent={Fade}>
         <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My Orders</MenuItem>
+        <MenuItem component={Link} to="/orders">My Orders</MenuItem>
         <MenuItem
           onClick={() => {
             dispatch(signOut()); 

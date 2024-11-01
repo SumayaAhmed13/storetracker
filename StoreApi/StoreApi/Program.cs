@@ -54,7 +54,7 @@ builder.Services.AddIdentityCore<User>(opts =>
 {
     opts.User.RequireUniqueEmail = true;
 })
-  .AddRoles<IdentityRole>()
+  .AddRoles<Role>()
   .AddEntityFrameworkStores<StoreContext>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

@@ -1,4 +1,5 @@
-﻿using StoreApi.DTOs;
+﻿using Microsoft.EntityFrameworkCore;
+using StoreApi.DTOs;
 using StoreApi.Entities;
 
 namespace StoreApi.Extensions
@@ -25,6 +26,11 @@ namespace StoreApi.Extensions
                 }).ToList(),
             };
 
+        }
+
+        public static IQueryable<Basket> RetriveBasketsWithItems(this IQueryable<Basket> query,string buyerId)
+        {
+            return query.Include(c=>c.Items).ThenInclude(p=>p.Product).Where(x=>x.BuyerId== buyerId);
         }
     }
 }
