@@ -73,6 +73,7 @@ namespace StoreApi.Controllers
                 ShippingAddress=orderDto.ShippingAddress,
                 Subtotal=subTotal,
                 DeliveryFee=deliveryfee,
+                PaymentIntentId=basket.PaymentIntentId,
 
             };
 

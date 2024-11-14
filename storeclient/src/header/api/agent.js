@@ -81,6 +81,9 @@ const Orders={
  list:()=>requests.get('orders'),
  fetch:(id)=>requests.get(`orders/${id}`),
  create:(values)=>requests.post('orders',values)
+};
+const Payments={
+ createPaymentIntent:()=>requests.post("payments",{})
 }
 
 const TestErrors = {
@@ -95,6 +98,7 @@ const agent = {
   TestErrors,
   Basket,
   Account,
-  Orders
+  Orders,
+  Payments
 };
 export default agent;

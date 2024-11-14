@@ -10,16 +10,16 @@ import Register from "../../features/account/Register";
 import ServerError from "../errors/ServerError";
 import NotFound from "../errors/NotFound";
 import BasketPage from "../../features/basket/BasketPage";
-import Checkout from "../../features/checkout/Checkout";
 import RequireAuth from "./RequireAuth";
 import Orders from "../../features/order/Orders";
+import CheckoutWrapper from "../../features/checkout/CheckoutWrapper";
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
       {element:<RequireAuth/>,children:[
-        { path: "checkout", element: <Checkout/>},
+        { path: "checkout", element: <CheckoutWrapper/>},
         { path: "orders", element: <Orders/>},
       ]},
       { path: "", element: <HomePage /> },

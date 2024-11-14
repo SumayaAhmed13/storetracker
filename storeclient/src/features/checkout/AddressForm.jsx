@@ -33,14 +33,14 @@ const AddressForm = () => {
         <Grid item xs={12} sm={6}>
           <AppTextInput control={control} name="country" label="Country" />
         </Grid>
-        <Grid item xs={12}>
+       
+      </Grid>
+      <Grid item xs={12}>
         <AppCheckbox
-            disabled={!formState.isDirty}
             name="saveAddress"
             control={control}
             label="Use this address for payment details"
           />
-        </Grid>
       </Grid>
     </>
   );
