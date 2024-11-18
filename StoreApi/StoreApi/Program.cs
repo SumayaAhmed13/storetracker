@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using StoreApi.Data;
 using StoreApi.Entities;
 using StoreApi.Middleware;
+using StoreApi.RequestHelpers;
 using StoreApi.Services;
 using System.Text;
 
@@ -18,6 +19,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 builder.Services.AddSwaggerGen(c =>
 {
     var jwtSecuritySchema = new OpenApiSecurityScheme
@@ -74,6 +76,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<PaymentService>();
+builder.Services.AddScoped<ImageService>();
 
 var app = builder.Build();
 
